@@ -4,22 +4,22 @@
     var socket = io('http://' + document.location.host);
     var previousConsole = window.console || {};
     window.console = {
-        log:function(msg){
-            previousConsole.log && previousConsole.log(msg);
-            socket.emit('console','log', msg);
+        log:function(vargs){
+            previousConsole.log && previousConsole.log.apply(previousConsole,arguments);
+            socket.emit('console','log', Array.from(arguments).join(" "));
         },
-        warn:function(msg){
-            previousConsole.warn && previousConsole.warn(msg);
-            socket.emit('console','warn', msg);
+        warn:function(vargs){
+            previousConsole.warn && previousConsole.warn.apply(previousConsole,arguments);
+            socket.emit('console','warn', Array.from(arguments).join(" "));
         },
-        error:function(msg){
-            previousConsole.error && previousConsole.error(msg);
-            socket.emit('console','error', msg);
+        error:function(vargs){
+            previousConsole.error && previousConsole.error.apply(previousConsole,arguments);
+            socket.emit('console','error', Array.from(arguments).join(" "));
         },
-        assert:function(assertion, msg){
-            previousConsole.assert && previousConsole.assert(assertion, msg);
+        assert:function(assertion ,vargs){
+            previousConsole.assert && previousConsole.assert.apply(previousConsole, arguments);
             if(assertion){
-                socket.emit('console','assert', msg);
+                socket.emit('console','assert', Array.from(arguments).join(" "));
             }
         }
     }
